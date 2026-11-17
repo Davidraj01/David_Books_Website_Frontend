@@ -2,17 +2,30 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api, asset, useTitle } from '../api.js';
 
+const WHATSAPP = '919994401291';
 const SOCIAL = { website: 'Website', amazon: 'Amazon', facebook: 'Facebook', instagram: 'Instagram', youtube: 'YouTube', twitter: 'X / Twitter', linkedin: 'LinkedIn' };
 
 function ContactForm() {
   const [f, setF] = useState({ name: '', email: '', message: '', website: '' });
   const [state, setState] = useState({ busy: false, done: false, err: '' });
+  const [sent, setSent] = useState(null);
   const send = async (e) => {
     e.preventDefault(); setState({ busy: true, done: false, err: '' });
-    try { await api.post('/api/contact', f); setState({ busy: false, done: true, err: '' }); setF({ name: '', email: '', message: '', website: '' }); }
+    try { await api.post('/api/contact', f); setSent(f); setState({ busy: false, done: true, err: '' }); setF({ name: '', email: '', message: '', website: '' }); }
     catch (x) { setState({ busy: false, done: false, err: x.message }); }
   };
-  if (state.done) return <p className="okmsg">Thank you. Your message has been sent.</p>;
+  if (state.done) {
+    const text = `Hello, I am ${sent.name} (${sent.email}).
+
+${sent.message}`;
+    return (
+      <div className="contact">
+        <p className="okmsg">Thank you. Your message has been sent.</p>
+        <p className="muted">Want a faster reply? Send the same message on WhatsApp.</p>
+        <a className="buy" href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}`} target="_blank" rel="noopener noreferrer">Send on WhatsApp →</a>
+      </div>
+    );
+  }
   return (
     <form className="contact" onSubmit={send}>
       <h2>Write to the author</h2>
