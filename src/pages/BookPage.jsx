@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { api, trackBuy, useTitle } from '../api.js';
+import { api, asset, trackBuy, useTitle } from '../api.js';
 import NotFound from './NotFound.jsx';
 
 function Share({ book }) {
@@ -40,7 +40,7 @@ export default function BookPage() {
     <div className="wrap bookpage" lang={book.language}>
       <Link to="/" className="back">← All books</Link>
       <div className="bp-grid">
-        <div className="bp-cover">{book.cover && <img src={book.cover} alt={`Front cover of ${book.title}`} />}</div>
+        <div className="bp-cover">{book.cover && <img src={asset(book.cover)} alt={`Front cover of ${book.title}`} />}</div>
         <div>
           <h1>{book.title}</h1>
           {book.subtitle && <p className="lede">{book.subtitle}</p>}
@@ -56,7 +56,7 @@ export default function BookPage() {
           <div className="minigrid">
             {more.map((o) => (
               <Link key={o._id} to={`/books/${o.slug}`} className="mini" lang={o.language}>
-                {o.cover && <img src={o.cover} alt={`Front cover of ${o.title}`} loading="lazy" />}
+                {o.cover && <img src={asset(o.cover)} alt={`Front cover of ${o.title}`} loading="lazy" />}
                 <span>{o.title}</span>
               </Link>
             ))}

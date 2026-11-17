@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { api } from '../api.js';
+import { api, asset } from '../api.js';
 
 export function ImageField({ label, value, onChange, hint }) {
   const [busy, setBusy] = useState(false);
@@ -13,7 +13,7 @@ export function ImageField({ label, value, onChange, hint }) {
     <div className="field">
       <span className="lbl">{label}</span>
       <div className="imgfield">
-        {value ? <img src={value} alt="" /> : <div className="ph">No image</div>}
+        {value ? <img src={asset(value)} alt="" /> : <div className="ph">No image</div>}
         <div>
           <label className="btn ghost">{busy ? 'Uploading…' : value ? 'Replace image' : 'Upload image'}<input type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={pick} /></label>
           {value && <button type="button" className="linkbtn" onClick={() => onChange('')}>Remove</button>}

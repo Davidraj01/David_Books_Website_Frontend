@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { api, getToken } from '../api.js';
+import { api, asset, getToken } from '../api.js';
 
 export default function Books() {
   const [books, setBooks] = useState(null);
@@ -36,7 +36,7 @@ export default function Books() {
         <tbody>
           {books.map((b, i) => (
             <tr key={b._id}>
-              <td className="thumb">{b.cover && <img src={b.cover} alt="" />}</td>
+              <td className="thumb">{b.cover && <img src={asset(b.cover)} alt="" />}</td>
               <td><Link to={`/admin/books/${b._id}`}><strong>{b.title}</strong></Link><br /><span className="muted">/books/{b.slug}</span></td>
               <td>{b.language}</td>
               <td className="num">{b.clicks || 0}</td>

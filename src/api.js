@@ -1,3 +1,7 @@
+// Backend base URL. Empty in dev (Vite proxies /api and /uploads to localhost:5000).
+export const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
+export const asset = (u) => (u && u.startsWith('/') ? API_BASE + u : u);
+
 const TOKEN_KEY = 'author_admin_token';
 export const getToken = () => { try { return localStorage.getItem(TOKEN_KEY); } catch { return null; } };
 export const setToken = (t) => { try { t ? localStorage.setItem(TOKEN_KEY, t) : localStorage.removeItem(TOKEN_KEY); } catch { /* private mode */ } };
@@ -7,7 +11,7 @@ async function request(method, url, body, isForm) {
   const t = getToken();
   if (t) headers.Authorization = `Bearer ${t}`;
   if (body && !isForm) headers['Content-Type'] = 'application/json';
-  const res = await fetch(url, { method, headers, body: body ? (isForm ? body : JSON.stringify(body)) : undefined });
+  const res = await fetch(API_BASE + url, { method, headers, body: body ? (isForm ? body : JSON.stringify(body)) : undefined });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
     if (res.status === 401 && url.startsWith('/api/admin')) { setToken(null); window.location.href = '/admin/login'; }

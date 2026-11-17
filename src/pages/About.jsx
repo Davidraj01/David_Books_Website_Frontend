@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { api, useTitle } from '../api.js';
+import { api, asset, useTitle } from '../api.js';
 
 const SOCIAL = { website: 'Website', amazon: 'Amazon', facebook: 'Facebook', instagram: 'Instagram', youtube: 'YouTube', twitter: 'X / Twitter', linkedin: 'LinkedIn' };
 
@@ -36,7 +36,7 @@ export default function About() {
   return (
     <div className="wrap about">
       <div className="about-grid">
-        {a.photo && <img className="portrait" src={a.photo} alt={a.name} />}
+        {a.photo && <img className="portrait" src={asset(a.photo)} alt={a.name} />}
         <div>
           <p className="eyebrow">About the author</p>
           <h1>{a.name}</h1>
